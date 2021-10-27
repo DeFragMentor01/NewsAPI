@@ -18,12 +18,10 @@ class Dashboard extends Component {
   addFavorite = favorite => {
     const { favourites } = this.state;
 
-    //Check the selected article with its id, to put it on favorite list
     if (!favourites.some(alreadyFavorite => alreadyFavorite.author === favorite.author)) {
       this.setState({
         favourites: [this.state.favourites, favorite]
       });
-      console.log(favourites) 
       localStorage.setItem('Detail', JSON.stringify([...this.state.favourites, favorite]));
     }
   };
@@ -35,14 +33,13 @@ class Dashboard extends Component {
     await axios
       .get(api)
       .then(response => {
-        console.log(response)
         this.setState({
           news: response.data.articles
         });
         
       })
       .catch(err => {
-        console.log(err);
+        alert(err);
       });
   };
   componentDidMount() {
@@ -56,7 +53,7 @@ class Dashboard extends Component {
           path="/dashboard"
           exact
           render={() => (
-            <Articles news={this.state.news} addFavorite={this.addFavorite} />
+            <Articles news={this.state.news} addFavorite={this.props.addFavorite} />
           )}
         />
         <Route
